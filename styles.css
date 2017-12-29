@@ -1,0 +1,84 @@
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body {
+  font-family: 'Droid Serif';
+}
+h1, h2, h3 {
+  font-family: 'Yanone Kaffeesatz';
+  font-weight: normal;
+  margin: .5em 0;
+}
+.remark-slide-content h3 {
+  font-size: 1.3em;
+}
+img {
+  height: auto;
+  width: 100px;
+}
+
+img.small, img.icon {
+  height: auto;
+  width: 40px;
+}
+img.icon {
+  vertical-align: middle;
+  margin-right: 1em;
+}
+img.full-size {
+  height: auto;
+  width: 100%;
+}
+
+label, div.label {
+  display: inline-block;
+}
+p {
+  display: inline-block;
+  margin: 0;
+  width: 100%;
+}
+ul {
+  padding-left: 0;
+}
+li {
+  list-style: none;
+  margin-bottom: 1em;
+}
+a, a:visited {
+  color: cadetblue;
+}
+footer {
+  position: fixed;
+  bottom: 15px;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+.references, .reference-link{
+  font-size: 0.8rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.questions {
+  text-align: center;
+}
+.questions img {
+    width: 60%;
+}
+
+.contact-info > * {
+  margin-bottom: 1em;
+}
+
+.about-me {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  grid-gap: 1em;
+}
+.about-me ul{
+  margin: 0;
+}
