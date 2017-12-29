@@ -60,7 +60,7 @@ class: center, middle
 
 ```java
 Integer typedNumber = 3
-typedNumber = "new value" //org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object 'new value' with class 'java.lang.String' to class 'java.lang.Integer'
+typedNumber = "new value" //org.codehaus.groovy.runtime.typehandling.GroovyCastException
 
 def dynamicValue = 10
 dynamicValue = "test"
@@ -509,7 +509,14 @@ class User {
 List<User> users = [new User(name: "Jesús"), new User(name: "Miguel Ángel")]
 assert users*.name == ["Jesús", "Miguel Ángel"]
 ```
+--
+<ul>
+  <li>* is optional, but I rather use it to make the code clearer</li>
+</ul>
 
+```java
+assert users.name == ["Jesús", "Miguel Ángel"]
+```
 ---
 <h2>Try it yourself</h2>
 <ul>
