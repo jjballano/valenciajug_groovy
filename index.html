@@ -72,6 +72,19 @@ assert dynamicValue == "test"
   <li>But I try to use types as much as I can</li>
 </ul>
 
+--
+<ul>
+  <li>You can also use @CompileStatic annotation for checking errors and performance
+</ul>
+
+```Java
+@groovy.transform.CompileStatic
+Integer count(){
+    return "just checking" //Compilation error
+}
+
+```
+
 ---
 <h2>Wait a minute...</h2>
 --
@@ -142,11 +155,12 @@ Set<Integer> values = [1,2,3,4,2,4,2]
 assert values == [1,2,3,4] as Set
 ```
 
----
+--
 <h2>Maps</h2>
 
 ```java
-Map<String, Integer> ages = ["Jesús": 25, "Lucía": 23, "Carlos": 27]
+String me = "Jesús"
+Map<String, Integer> ages = ["Lucía": 23, "Carlos": 27, (me): 25]
 
 assert ages["Jesús"] == 25
 
@@ -210,7 +224,7 @@ assert ages."${name}" == 23
   List<Integer> values = [1,2,3]
   Map<String, Integer> transformed = values.collectEntries {
     String key = "value ${it}"
-    [(key): it] //I need (...) because it would take it as value "key", instead of the value of the variable
+    [(key): it]
   }
   assert transformed == ["value 1":1, "value 2":2, "value 3":3]
 ```
@@ -240,6 +254,68 @@ assert ages."${name}" == 23
   <li class="remark-inline-code">Integer sum = [4,8].inject(0) { result, i -> result + i }</li>
 </ul>
 
+---
+<h2>More methods for collections</h2>
+--
+<ul>
+  <li>find, findAll</li>
+</ul>
+
+```java
+  List<Integer> values = [1,2,3]
+
+  assert values.find{ it % 2 == 0 } == 2
+  assert values.findAll{ it % 2 == 0 } == [2]
+```
+--
+<ul>
+  <li>count, countBy</li>
+</ul>
+
+```java
+  List<Integer> values = [1,2,3]
+
+  assert values.count{ it % 2 == 0 } == 1
+  assert values.countBy{ it % 2 == 0 } == [(false): 2, (true):1]
+```
+--
+<ul>
+  <li>sort</li>
+</ul>
+
+```java
+  List<Integer> values = [2,7,3,9]
+  assert values.sort(false) == [2,3,7,9] //mutate by default true
+  assert values == [2,7,3,9]
+
+  List<Map> mapValues = [[a:1, b:2], [a:4, b:4], [a:2, b:8], [a:-1, b:9]]
+  mapValues.sort{ it.a } == [[a:-1, b:9], [a:1, b:2], [a:2, b:8], [a:4, b:4]]
+```
+---
+<h2>Class DefaultGroovyMethods</h2>
+<ul>
+  <li>It's a Groovy class that defines many methods which appear on normal JDK classes inside the Groovy environment</li>
+</ul>
+--
+<ul>
+  <li>find, collect, each, with, etc. are defined in DefaultGroovyMethods</li>
+</ul>
+--
+<ul>
+  <li>Besides those, another one is asBoolean, very useful for if conditional</li>
+</ul>
+
+```Java
+if (num){
+  println "num not null or 0"
+} else {
+  println "num is null or 0"
+}
+
+```
+
+???
+This class defines methods that objects will contain out of the box.
 ---
 <h2>Date</h2>
 <ul>
@@ -392,7 +468,6 @@ myObject.with{
   assert name == "Jesús"
 }
 ```
-
 ---
 <h2>Closures</h2>
 --
