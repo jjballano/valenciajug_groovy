@@ -97,7 +97,7 @@ Integer count(){
 </ul>
 --
 <ul>
-  <li>Have you compared two string with == operator?</li>
+  <li>Have you compared two strings with == operator?</li>
 </ul>
 --
 <ul>
@@ -141,16 +141,16 @@ String name = "ValenciaJUG"
 
 "Hi ${name}" == "Hi ${name}"
 
-"Hi ${name}" === "Hi Valencia" //False! Only for Groovy 2.6 and above
+"Hi ${name}" === "Hi Valencia" //False! And only for Groovy 2.6 and above
 ```
 
 ---
 <h2>Collections</h2>
 
 ```java
-
 List<Integer> values = [1,2,3]
-
+```
+```java
 Set<Integer> values = [1,2,3,4,2,4,2]
 assert values == [1,2,3,4] as Set
 ```
@@ -160,12 +160,10 @@ assert values == [1,2,3,4] as Set
 
 ```java
 String me = "Jesús"
-Map<String, Integer> ages = ["Lucía": 23, "Carlos": 27, (me): 25]
+Map<String, Integer> ages = ["Lucía": 23, Carlos: 27, (me): 25]
 
 assert ages["Jesús"] == 25
-
 assert ages.Carlos == 27
-
 String name = "Lucía"
 assert ages."${name}" == 23
 ```
@@ -177,18 +175,23 @@ assert ages."${name}" == 23
 
 ```java
   List<Integer> values = [3, 4, 10]
-  values.each{
-    println it * 2
-  }  // will print 6, 8 and 20
-
+```
+```java
   values.each{ value ->
     println value * 2
-  }  // we can use a name for param
-
+  }  // will print 6, 8 and 20
+```
+--
+```java
+values.each{
+  println it * 2
+}  // "it" by default
+```
+--
+```java
   (1..3).each {
     println it
   } // will print 1, 2 and 3 as (1..3) is a range
-
 ```
 --
 <h3>times</h3>
@@ -209,8 +212,7 @@ assert ages."${name}" == 23
 
 ```java
   List<Integer> values = [3, 4, 10]
-  List<Integer> doubled = values.collect{ it * 2 }
-  assert doubled == [6, 8, 20]
+  assert values.collect{ it * 2 } == [6, 8, 20]
 ```
 
 --
@@ -238,22 +240,22 @@ assert ages."${name}" == 23
   <li>More loops:</li>
 </ul>
 --
-<ul>
-  <li class="remark-inline-code">1.upto(10) { println it} </li>
-</ul>
---
-<ul>
-  <li class="remark-inline-code">10.downto(1) { println it} </li>
-</ul>
---
-<ul>
-  <li class="remark-inline-code">["a","b"].eachWithIndex { val, idx -> println "Value ${val} at position ${idx}"} </li>
-</ul>
---
-<ul>
-  <li class="remark-inline-code">Integer sum = [4,8].inject(0) { result, i -> result + i }</li>
-</ul>
 
+```java
+1.upto(10) { println it}
+```
+--
+```java
+10.downto(1) { println it}
+```
+--
+```java
+["a","b"].eachWithIndex { val, idx -> println "Value ${val} at position ${idx}"}
+```
+--
+```java
+Integer sum = [4,8].inject(0) { result, i -> result + i }
+```
 ---
 <h2>More methods for collections</h2>
 --
@@ -262,10 +264,10 @@ assert ages."${name}" == 23
 </ul>
 
 ```java
-  List<Integer> values = [1,2,3]
+  List<Integer> values = [1,2,3,4]
 
   assert values.find{ it % 2 == 0 } == 2
-  assert values.findAll{ it % 2 == 0 } == [2]
+  assert values.findAll{ it % 2 == 0 } == [2, 4]
 ```
 --
 <ul>
@@ -288,8 +290,8 @@ assert ages."${name}" == 23
   assert values.sort(false) == [2,3,7,9] //mutate by default true
   assert values == [2,7,3,9]
 
-  List<Map> mapValues = [[a:1, b:2], [a:4, b:4], [a:2, b:8], [a:-1, b:9]]
-  mapValues.sort{ it.a } == [[a:-1, b:9], [a:1, b:2], [a:2, b:8], [a:4, b:4]]
+  List<Map> mapValues = [[a:1, b:2], [a:4, b:4], [a:-1, b:9]]
+  mapValues.sort{ it.a } == [[a:-1, b:9], [a:1, b:2], [a:4, b:4]]
 ```
 ---
 <h2>Class DefaultGroovyMethods</h2>
@@ -365,8 +367,7 @@ assert myObject.attribute == "with setter"
 <ul>
   <li>Methods can be typed, dynamic or void</li>
   <li>By default, all attributes are public and have their getter and setter </li>
-  <li>Methods will return last sentence unless it's void.</li>
-  <li>'return' can be used as well</li>
+  <li>Methods will return last sentence unless it's void, so 'return' is optional</li>
 </ul>
 
 ---
@@ -405,7 +406,7 @@ class MyClass {
 
 MyClass myObject = new MyClass()
 assert myObject.privateAttribute == "private"
-new myObject.getPrivateAttribute() //groovy.lang.MissingMethodException: No signature of method: MyClass.getPrivateAttribute() is applicable for argument types: () values: []
+new myObject.getPrivateAttribute() //groovy.lang.MissingMethodException
 
 assert myObject.value == "Value in private method"
 
@@ -434,6 +435,26 @@ assert myObject."${attribute}" == "Value in method"
 
 <ul>
   <li>Methods and attributes can be accessed with string values</li>
+</ul>
+
+---
+<h2>Classes and methods</h2>
+
+```java
+class MyClass {
+
+  String "method name"(){
+    "Value in method"
+  }
+}
+
+MyClass myObject = new MyClass()
+assert myObject."method name"() == "Value in method"
+
+```
+
+<ul>
+  <li>Methods can be named with strings. Very useful for testing methods</li>
 </ul>
 
 ---
@@ -472,7 +493,7 @@ myObject.with{
 <h2>Closures</h2>
 --
 <ul>
-  <li>As you've seen in loops before, Groovy has closures</li>
+  <li>As you've already seen in loops before, Groovy has closures</li>
 </ul>
 --
 <ul>
@@ -485,7 +506,7 @@ myObject.with{
 
 --
 <ul>
-  <li>As methods, always returns the result of last sentence</li>
+  <li>Always return the result of last sentence, as methods do</li>
 </ul>
 
 --
@@ -500,7 +521,7 @@ assert sayHi('ValenciaJUG') == "Hi, ValenciaJUG"
 
 --
 <ul>
-  <li>And used in methods</li>
+  <li>And used in methods as parameters</li>
 </ul>
 
 ```java
@@ -509,13 +530,13 @@ String tellMeSomething(Closure closure){
   }
 
 assert tellMeSomething{ name -> "Hi, ${name}" } == "Hi, ValenciaJUG"
+//parentheses not needed when you call a method
 ```
 
 ---
 <h2>Traits</h2>
 <ul>
   <li>Similar to mixins in other languages</li>
-  <li>Composition instead of inheritance<li>
 </ul>
 
 ```java
@@ -531,7 +552,9 @@ MyClass myObject = new MyClass()
 assert myObject.sayHello() == "Hello from the trait"
 assert myObject.name == "Jesús"
 ```
-
+<ul>
+  <li>Methods and attributes can be overridden within the class</li>
+</ul>
 ---
 <h2>Null safe operator ( ? )</h2>
 <ul>
@@ -639,6 +662,9 @@ assert users.name == ["Jesús", "Miguel Ángel"]
 <div class="contact-info">
   <div><img class="icon" src="imgs/email.png" alt="Email icon"> <span>jjballano@gmail.com</span></div>
   <div><img class="icon" src="imgs/twitter.png" alt="Twitter icon"><span>@jjballano</span></div>
+</div>
+<div>
+  <div><a href="https://valenciajug.jjballano.com">https://valenciajug.jjballano.com</a></div>
 </div>
 
     </textarea>
